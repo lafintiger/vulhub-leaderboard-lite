@@ -1,0 +1,17 @@
+{
+  "name": "vulhub-leaderboard-combined",
+  "version": "1.0.0",
+  "engines": {
+    "node": "18.x"
+  },
+  "scripts": {
+    "build": "npm run build:frontend && npm run build:api",
+    "build:frontend": "cd src-frontend && npm install && npm run build",
+    "build:api": "cd src-api && npm install && nest build",
+    "start": "cd src-api && node dist/main",
+    "heroku-postbuild": "npm run install:all && npm run build",
+    "install:all": "cd src-frontend && npm install && cd ../src-api && npm install && cd .."
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

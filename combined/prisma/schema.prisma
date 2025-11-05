@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  points    Int      @default(0)
+  createdAt DateTime @default(now())
+
+  submissions Submission[]
+
+  @@map("users_clean")
+}
+
+model Submission {
+  id            String   @id @default(cuid())
+  userId        String
+  vulnName      String
+  vulnCategory  String?
+  screenshotUrl String
+  notes         String?
+  approved      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("submissions_clean")
+}
+
+model Badge {
+  id          String @id @default(cuid())
+  userId      String
+  name        String
+  category    String
+  tier        String
+  awardedAt   DateTime @default(now())
+
+  @@unique([userId, name])
+  @@map("badges_clean")
+}
+
